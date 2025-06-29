@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>City Weather App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding-top: 50px;
+      background: linear-gradient(to bottom, #a1c4fd, #c2e9fb);
+    }
+    input, button {
+      padding: 10px;
+      font-size: 1rem;
+      margin-top: 10px;
+    }
+    #temp {
+      font-size: 2rem;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🌤️ Weather by City</h1>
+  <input id="cityInput" placeholder="Enter a city..." />
+  <button onclick="getWeather()">Get Temperature</button>
+
+  <div id="temp">Waiting for input...</div>
+
+  <script>
+    async function getWeather() {
+      const city = document.getElementById('cityInput').value.trim();
+      if (!city) return alert("Please enter a city name");
+
+      const res = await fetch(`/weather?city=${encodeURIComponent(city)}`);
+      const data = await res.json();
+
+      if (data.error) {
+        document.getElementById('temp').innerText = `❌ ${data.error}`;
+      } else {
+        document.getElementById('temp').innerText = `🌡️ ${data.city}: ${data.temperature}°C`;
+      }
+    }
+  </script>
+</body>
+</html>
